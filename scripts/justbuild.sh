@@ -3,7 +3,11 @@
 
 cd ${WORKSPACE}/hadoop-lzo
 mvn versions:set -DnewVersion=0.4.18-${DATE_STRING}
-mvn clean package
+if [ "$RUN_UNIT_TESTS" == "true" ]; then
+  mvn clean package
+else
+  mvn clean package -DskipTests
+fi
 
 cd ${WORKSPACE}/hadoop
 mvn versions:set -DnewVersion=${ARTIFACT_VERSION}
