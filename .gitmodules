@@ -1,0 +1,6 @@
+[submodule "hadoop"]
+	path = hadoop
+	url = https://github.com/Altiscale/hadoop.git
+[submodule "hadoop-lzo"]
+	path = hadoop-lzo
+	url = https://github.com/Altiscale/hadoop-lzo.git
