@@ -2,13 +2,13 @@
 # deal with the fuse artifacts to create a tarball
 ALTISCALE_RELEASE=${ALTISCALE_RELEASE:-0.1.0}
 
-tar -C ${WORKSPACE}/hadoop-common/hadoop-hdfs-project/hadoop-hdfs/target/native/main/native/fuse-dfs -cvzf ${WORKSPACE}/hadoop-common/hadoop-dist/target/fuse-${ARTIFACT_VERSION}.tar.gz fuse_dfs
+tar -C ${WORKSPACE}/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/native/main/native/fuse-dfs -cvzf ${WORKSPACE}/hadoop/hadoop-dist/target/fuse-${ARTIFACT_VERSION}.tar.gz fuse_dfs
 
 # convert each tarball into an RPM
 DEST_ROOT=${INSTALL_DIR}/opt/fuse-${ARTIFACT_VERSION}
 mkdir --mode=0755 -p ${DEST_ROOT}
 cd ${DEST_ROOT}
-tar -xvzpf ${WORKSPACE}/hadoop-common/hadoop-dist/target/fuse-${ARTIFACT_VERSION}.tar.gz
+tar -xvzpf ${WORKSPACE}/hadoop/hadoop-dist/target/fuse-${ARTIFACT_VERSION}.tar.gz
 chmod 500 ${DEST_ROOT}/fuse_dfs
 
 cd ${RPM_DIR}
@@ -38,7 +38,7 @@ OPT_DIR=${INSTALL_DIR}/opt
 mkdir --mode=0755 -p ${OPT_DIR}
 cd ${OPT_DIR}
 
-tar -xvzpf ${WORKSPACE}/hadoop-common/hadoop-dist/target/hadoop-${ARTIFACT_VERSION}.tar.gz
+tar -xvzpf ${WORKSPACE}/hadoop/hadoop-dist/target/hadoop-${ARTIFACT_VERSION}.tar.gz
 chmod 755 ${OPT_DIR}/hadoop-${ARTIFACT_VERSION}
 # https://verticloud.atlassian.net/browse/OPS-731
 # create /etc/hadoop, in a future version of the build we may move the config there directly
