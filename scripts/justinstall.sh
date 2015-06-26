@@ -1,37 +1,8 @@
 #!/bin/sh -ex
-# deal with the fuse artifacts to create a tarball
 ALTISCALE_RELEASE=${ALTISCALE_RELEASE:-0.1.0}
 
-tar -C ${WORKSPACE}/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/native/main/native/fuse-dfs -cvzf ${WORKSPACE}/hadoop/hadoop-dist/target/fuse-${ARTIFACT_VERSION}.tar.gz fuse_dfs
-
-# convert each tarball into an RPM
-DEST_ROOT=${INSTALL_DIR}/opt/fuse-${ARTIFACT_VERSION}
-mkdir --mode=0755 -p ${DEST_ROOT}
-cd ${DEST_ROOT}
-tar -xvzpf ${WORKSPACE}/hadoop/hadoop-dist/target/fuse-${ARTIFACT_VERSION}.tar.gz
-chmod 500 ${DEST_ROOT}/fuse_dfs
-
-cd ${RPM_DIR}
-
-export RPM_NAME=vcc-fuse-${ARTIFACT_VERSION}
-fpm --verbose \
---maintainer ops@verticloud.com \
---vendor VertiCloud \
---provides ${RPM_NAME} \
---description "${DESCRIPTION}" \
---replaces vcc-fuse \
--s dir \
--t rpm \
--n ${RPM_NAME} \
--v ${ALTISCALE_RELEASE} \
---iteration ${DATE_STRING} \
---rpm-user root \
---rpm-group root \
--C ${INSTALL_DIR} \
-opt
-
-#clear the install dir and re-use
-rm -rf ${INSTALL_DIR}
+# convert the tarball into an RPM
+#create the installation directory (to stage artifacts)
 mkdir -p --mode 0755 ${INSTALL_DIR}
 
 OPT_DIR=${INSTALL_DIR}/opt
@@ -63,7 +34,7 @@ cp ${WORKSPACE}/hadoop-lzo/target/native/Linux-amd64-64/lib/libgplcompression.* 
 
 cd ${RPM_DIR}
 
-export RPM_NAME=`echo vcc-hadoop-${ARTIFACT_VERSION}`
+export RPM_NAME=`echo alti-hadoop-${ARTIFACT_VERSION}`
 fpm --verbose \
 --maintainer ops@verticloud.com \
 --vendor VertiCloud \
@@ -71,7 +42,7 @@ fpm --verbose \
 --provides "libhdfs.so.0.0.0()(64bit)" \
 --provides "libhdfs(x86-64)" \
 --provides libhdfs \
---replaces vcc-hadoop \
+--replaces alti-hadoop \
 --depends 'lzo > 2.0' \
 -s dir \
 -t rpm \
