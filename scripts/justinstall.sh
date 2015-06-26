@@ -1,5 +1,6 @@
 #!/bin/sh -ex
 ALTISCALE_RELEASE=${ALTISCALE_RELEASE:-0.1.0}
+RPM_DESCRIPTION="Apache Hadoop ${ARTIFACT_VERSION}\n\n${DESCRIPTION}"
 
 # convert the tarball into an RPM
 #create the installation directory (to stage artifacts)
@@ -36,8 +37,8 @@ cd ${RPM_DIR}
 
 export RPM_NAME=`echo alti-hadoop-${ARTIFACT_VERSION}`
 fpm --verbose \
---maintainer ops@verticloud.com \
---vendor VertiCloud \
+--maintainer support@altiscale.com \
+--vendor Altiscale \
 --provides ${RPM_NAME} \
 --provides "libhdfs.so.0.0.0()(64bit)" \
 --provides "libhdfs(x86-64)" \
@@ -49,7 +50,7 @@ fpm --verbose \
 -n ${RPM_NAME}  \
 -v ${ALTISCALE_RELEASE} \
 --iteration ${DATE_STRING} \
---description "${DESCRIPTION}" \
+--description "${RPM_DESCRIPTION}" \
 ${CONFIG_FILES} \
 --rpm-user root \
 --rpm-group root \
