@@ -45,6 +45,8 @@ fpm --verbose \
 --provides libhdfs \
 --replaces alti-hadoop \
 --depends 'lzo > 2.0' \
+--url ${GITREPO} \
+--license "Apache License v2" \
 -s dir \
 -t rpm \
 -n ${RPM_NAME}  \
