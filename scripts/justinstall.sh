@@ -54,7 +54,7 @@ fpm --verbose \
 --iteration ${DATE_STRING} \
 --description "${RPM_DESCRIPTION}" \
 ${CONFIG_FILES} \
---rpm-user root \
---rpm-group root \
+--rpm-user hadoop \
+--rpm-group hadoop \
 -C ${INSTALL_DIR} \
 opt etc
