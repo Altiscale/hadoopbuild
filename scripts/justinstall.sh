@@ -19,19 +19,30 @@ mkdir --mode=0755 -p ${ETC_DIR}
 # move the config directory to /etc
 cp -rp ${OPT_DIR}/hadoop-${ARTIFACT_VERSION}/etc/hadoop/* $ETC_DIR
 mv ${OPT_DIR}/hadoop-${ARTIFACT_VERSION}/etc/hadoop ${OPT_DIR}/hadoop-${ARTIFACT_VERSION}/etc/hadoop-templates
-cd ${INSTALL_DIR}
-find etc -type f -print | awk '{print "/" $1}' > /tmp/$$.files
-export CONFIG_FILES=""
-for i in `cat /tmp/$$.files`; do CONFIG_FILES="--config-files $i $CONFIG_FILES "; done
-export CONFIG_FILES
-rm -f /tmp/$$.files
 
+# Add init.d scripts and sysconfig
+mkdir --mode=0755 -p ${INSTALL_DIR}/etc/rc.d/init.d
+cp ${WORKSPACE}/etc/init.d/* ${INSTALL_DIR}/etc/rc.d/init.d
+mkdir --mode=0755 -p ${INSTALL_DIR}/etc/sysconfig
+cp ${WORKSPACE}/etc/sysconfig/* ${INSTALL_DIR}/etc/sysconfig
+
+cd ${INSTALL_DIR}
 
 #interleave lzo jars
 for i in share/hadoop/httpfs/tomcat/webapps/webhdfs/WEB-INF/lib share/hadoop/mapreduce/lib share/hadoop/yarn/lib share/hadoop/common/lib; do
   cp -rp ${WORKSPACE}/hadoop-lzo/target/hadoop-lzo-[0-9]*.[0-9]*.[0-9]*-[0-9]*[0-9].jar ${OPT_DIR}/hadoop-${ARTIFACT_VERSION}/$i
 done
 cp -P ${WORKSPACE}/hadoop-lzo/target/native/Linux-amd64-64/lib/libgplcompression.* ${OPT_DIR}/hadoop-${ARTIFACT_VERSION}/lib/native/
+
+# Fix all permissions
+chmod 755 ${INSTALL_DIR}/opt/hadoop-${ARTIFACT_VERSION}/sbin/*.sh
+chmod 755 ${INSTALL_DIR}/opt/hadoop-${ARTIFACT_VERSION}/sbin/*.cmd
+
+# All config files:
+export CONFIG_FILES="--config-files /etc/hadoop-${ARTIFACT_VERSION} \
+  --config-files /opt/hadoop-${ARTIFACT_VERSION}/share/hadoop/httpfs/tomcat/conf \
+  --config-files /opt/hadoop-${ARTIFACT_VERSION}/share/hadoop/httpfs/tomcat/webapps/webhdfs/WEB-INF/web.xml \
+  --config-files /etc/sysconfig "
 
 cd ${RPM_DIR}
 
