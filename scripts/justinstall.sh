@@ -65,6 +65,8 @@ fpm --verbose \
 --iteration ${DATE_STRING} \
 --description "${RPM_DESCRIPTION}" \
 ${CONFIG_FILES} \
+--rpm-attr 755,root,root:/etc/sysconfig/hadoop_journalnode \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_journalnode \
 --rpm-user hadoop \
 --rpm-group hadoop \
 -C ${INSTALL_DIR} \
