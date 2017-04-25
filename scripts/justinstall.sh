@@ -37,6 +37,7 @@ cp -P ${WORKSPACE}/hadoop-lzo/target/native/Linux-amd64-64/lib/libgplcompression
 # Fix all permissions
 chmod 755 ${INSTALL_DIR}/opt/hadoop-${ARTIFACT_VERSION}/sbin/*.sh
 chmod 755 ${INSTALL_DIR}/opt/hadoop-${ARTIFACT_VERSION}/sbin/*.cmd
+chmod 644 ${INSTALL_DIR}/opt/hadoop-${ARTIFACT_VERSION}/share/hadoop/httpfs/tomcat/conf/*
 
 # All config files:
 export CONFIG_FILES="--config-files /etc/hadoop-${ARTIFACT_VERSION} \
@@ -65,8 +66,23 @@ fpm --verbose \
 --iteration ${DATE_STRING} \
 --description "${RPM_DESCRIPTION}" \
 ${CONFIG_FILES} \
---rpm-attr 755,root,root:/etc/sysconfig/hadoop_journalnode \
+--rpm-attr 644,root,root:/etc/sysconfig/hadoop_journalnode \
+--rpm-attr 644,root,root:/etc/sysconfig/hadoop_datanode \
+--rpm-attr 644,root,root:/etc/sysconfig/hadoop_historyserver \
+--rpm-attr 644,root,root:/etc/sysconfig/hadoop_namenode \
+--rpm-attr 644,root,root:/etc/sysconfig/hadoop_nodemanager \
+--rpm-attr 644,root,root:/etc/sysconfig/hadoop_resourcemanager \
+--rpm-attr 644,root,root:/etc/sysconfig/hadoop_secondarynamenode \
+--rpm-attr 644,root,root:/etc/sysconfig/hadoop_timelineserver \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_datanode \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_historyserver \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_httpfs \
 --rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_journalnode \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_namenode \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_nodemanager \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_resourcemanager \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_secondarynamenode \
+--rpm-attr 755,root,root:/etc/rc.d/init.d/hadoop_timelineserver \
 --rpm-user hadoop \
 --rpm-group hadoop \
 -C ${INSTALL_DIR} \
