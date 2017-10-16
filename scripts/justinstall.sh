@@ -29,7 +29,7 @@ cp ${WORKSPACE}/etc/sysconfig/* ${INSTALL_DIR}/etc/sysconfig
 cd ${INSTALL_DIR}
 
 #interleave lzo jars
-for i in share/hadoop/httpfs/tomcat/webapps/webhdfs/WEB-INF/lib share/hadoop/mapreduce/lib share/hadoop/yarn/lib share/hadoop/common/lib; do
+for i in share/hadoop/mapreduce/lib share/hadoop/yarn/lib share/hadoop/common/lib; do
   cp -rp ${WORKSPACE}/hadoop-lzo/target/hadoop-lzo-[0-9]*.[0-9]*.[0-9]*-[0-9]*[0-9].jar ${OPT_DIR}/hadoop-${ARTIFACT_VERSION}/$i
 done
 cp -P ${WORKSPACE}/hadoop-lzo/target/native/Linux-amd64-64/lib/libgplcompression.* ${OPT_DIR}/hadoop-${ARTIFACT_VERSION}/lib/native/
@@ -37,12 +37,9 @@ cp -P ${WORKSPACE}/hadoop-lzo/target/native/Linux-amd64-64/lib/libgplcompression
 # Fix all permissions
 chmod 755 ${INSTALL_DIR}/opt/hadoop-${ARTIFACT_VERSION}/sbin/*.sh
 chmod 755 ${INSTALL_DIR}/opt/hadoop-${ARTIFACT_VERSION}/sbin/*.cmd
-chmod 644 ${INSTALL_DIR}/opt/hadoop-${ARTIFACT_VERSION}/share/hadoop/httpfs/tomcat/conf/*
 
 # All config files:
 export CONFIG_FILES="--config-files /etc/hadoop-${ARTIFACT_VERSION} \
-  --config-files /opt/hadoop-${ARTIFACT_VERSION}/share/hadoop/httpfs/tomcat/conf \
-  --config-files /opt/hadoop-${ARTIFACT_VERSION}/share/hadoop/httpfs/tomcat/webapps/webhdfs/WEB-INF/web.xml \
   --config-files /etc/sysconfig "
 
 cd ${RPM_DIR}
